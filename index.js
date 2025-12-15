@@ -22,6 +22,7 @@ app.post('/relay', async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body)
+      console.log("Forwarded to backend, response:", data);
     });
 
     const data = await response.text();
@@ -46,4 +47,5 @@ app.get('/', (req, res) => {
 // Start server on Railway port
 const PORT = process.env.PORT || 6769;
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
+
 
