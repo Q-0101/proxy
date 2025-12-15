@@ -6,10 +6,10 @@ const app = express();
 app.use(express.json());
 
 // Target backend
-const targetURL = 'https://arcduino.onrender.com/api/water-level';
+const targetURL = 'http://arcduino.onrender.com/api/water-level';
 
 app.post('/relay', async (req, res) => {
-  // Debug: log what ESP8266/curl sent
+  // Log received data from ESP8266 or curl
   console.log("Received data from ESP8266/curl:", req.body);
 
   if (req.body.level === undefined) {
@@ -22,12 +22,14 @@ app.post('/relay', async (req, res) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body)
-      console.log("Forwarded to backend, response:", data);
     });
 
-    const data = await response.text();
+    const data = await response.text(); // raw response from backend
 
-    // Respond to ESP8266/curl with success and received value
+    // Log what the backend returned
+    console.log("Forwarded to backend, response:", data);
+
+    // Respond to ESP8266/curl with both received and backend response
     res.json({
       success: true,
       received: req.body,
@@ -47,5 +49,3 @@ app.get('/', (req, res) => {
 // Start server on Railway port
 const PORT = process.env.PORT || 6769;
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
-
-
