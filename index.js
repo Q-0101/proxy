@@ -1,15 +1,11 @@
 const express = require('express');
-const fetch = require('node-fetch'); // or built-in fetch if Node 18+
+const fetch = require('node-fetch');
 const app = express();
 
-// Parse JSON in incoming requests
 app.use(express.json());
-
-// Target backend
 const targetURL = 'http://arcduino.onrender.com/api/water-level';
 
 app.post('/relay', async (req, res) => {
-  // Log received data from ESP8266 or curl
   console.log("Received data from ESP8266/curl:", req.body);
 
   if (req.body.level === undefined) {
@@ -17,19 +13,15 @@ app.post('/relay', async (req, res) => {
   }
 
   try {
-    // Forward data to your backend
     const response = await fetch(targetURL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(req.body)
     });
 
-    const data = await response.text(); // raw response from backend
-
-    // Log what the backend returned
+    const data = await response.text();
     console.log("Forwarded to backend, response:", data);
 
-    // Respond to ESP8266/curl with both received and backend response
     res.json({
       success: true,
       received: req.body,
@@ -41,11 +33,10 @@ app.post('/relay', async (req, res) => {
   }
 });
 
-// Optional root endpoint
 app.get('/', (req, res) => {
   res.send('ESP8266 Proxy Online!');
 });
 
-// Start server on Railway port
 const PORT = process.env.PORT || 6769;
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
+
