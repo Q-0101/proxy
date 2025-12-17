@@ -5,7 +5,7 @@ const app = express();
 app.use(express.json());
 
 // Target backend
-const targetURL = 'https://arcduino.onrender.com/api/water-level';
+const targetURL = 'http://arcduino.onrender.com/api/water-level';
 
 app.post('/relay', async (req, res) => {
   // Log received data from ESP8266 or curl
@@ -48,6 +48,7 @@ app.get('/', (req, res) => {
 // Start server on Railway port
 const PORT = process.env.PORT || 6769;
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
+
 
 
 
