@@ -1,5 +1,4 @@
 const express = require('express');
-const fetch = require('node-fetch'); // or built-in fetch if Node 18+
 const app = express();
 
 // Parse JSON in incoming requests
@@ -49,4 +48,5 @@ app.get('/', (req, res) => {
 // Start server on Railway port
 const PORT = process.env.PORT || 6769;
 app.listen(PORT, () => console.log(`Proxy running on port ${PORT}`));
+
 
